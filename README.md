@@ -1,5 +1,5 @@
 
-# DESD Portal
+# Uni Hub
 
 **Live demo:**  
 🔗 http://paulamie.pythonanywhere.com
@@ -10,7 +10,7 @@ Accessible from any device with an internet connection.
 
 ## 📦 Overview
 
-**DESD Portal** is a Django-based web application deployed using Docker. The platform is designed to support user interaction, content management, and backend data handling. It is fully containerised using `docker-compose` and easily deployable both locally and to cloud platforms like PythonAnywhere.
+**Uni Hub** is a Django-based web application deployed using Docker. The platform is designed to support user interaction, content management, and backend data handling. It is fully containerised using `docker-compose` and easily deployable both locally and to cloud platforms like PythonAnywhere.
 
 ---
 
