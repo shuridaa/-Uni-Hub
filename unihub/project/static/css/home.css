@@ -1,0 +1,349 @@
+
+/* Unified and Accessible Home.css */
+
+/* Base Reset and Font */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+body {
+    background-color: #ffffff;
+    color: #000000;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+
+header {
+    background-color: #003366;
+    padding: 10px 20px;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 60px;
+}
+
+.navbar img {
+    width: 150px;
+    height: 65px;
+    margin-right: 80px;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 15px;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-links li {
+    display: inline-block;
+}
+
+.nav-links a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 10px 16px;
+    letter-spacing: 0.15em;
+}
+
+.nav-links a:hover,
+.nav-links a:focus {
+    background-color: #0055A5;
+    border-radius: 8px;
+}
+
+
+/* Search Icon */
+.search-container {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.search-icon {
+    width: 30px;
+    height: auto;
+    cursor: pointer;
+}
+
+/* Main Grid Layout */
+.main-container {
+    display: grid;
+    grid-template-areas: 
+        "profile connects notifications"
+        "posts posts posts";
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+/* Grid Areas */
+.profile { grid-area: profile; }
+.friends-communities { grid-area: connects; }
+.notifications { grid-area: notifications; }
+.latest-posts { grid-area: posts; }
+
+/* Containers / Cards */
+.profile,
+.friends-communities,
+.notifications,
+.post-example,
+.make-post {
+    background-color: #f9f9f9;
+    border-radius: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    padding: 20px;
+}
+
+.profile img {
+    border-radius: 8px;
+    margin-bottom: 10px;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
+
+/* Form Inputs */
+textarea {
+    width: 100%;
+    resize: none;
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 8px;
+    border: 1px solid #ccc;
+}
+
+textarea:focus {
+    border-color: #0055A5;
+    outline: 3px solid #FFD700;
+    outline-offset: 2px;
+}
+
+/* Post Button */
+.btn-post {
+    background-color: #0055A5;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 12px;
+    cursor: pointer;
+    margin-top: 8px;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.btn-post:hover,
+.btn-post:focus {
+    background-color: #003366;
+    outline: none;
+}
+
+/* Friends and Communities Section */
+.friends-communities div,
+.notifications ul li {
+    background-color: #f0faff;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+}
+
+/* Post Styling */
+.post-example {
+    flex: 1 1 30%;
+    min-width: 280px;
+    max-width: 32%;
+    box-sizing: border-box;
+}
+
+.post-user {
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.post-content {
+    background-color: #f5f5f5;
+    padding: 10px;
+    border-radius: 6px;
+    word-wrap: break-word;
+    margin-bottom: 8px;
+}
+
+.post-date {
+    font-size: 12px;
+    color: #666;
+    text-align: right;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5 {
+    color: #003366;
+}
+
+/* Links */
+a {
+    color: #0055A5;
+}
+
+a:hover,
+a:focus {
+    color: #003366;
+    text-decoration: underline;
+}
+
+/* Alerts */
+.alert {
+    padding: 1rem;
+    border-radius: 10px;
+    margin: 1rem 0;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.alert-error, .alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.alert-info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+
+.alert-warning {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+/* Accessibility Focus Outline */
+a:focus,
+button:focus,
+input:focus,
+select:focus,
+textarea:focus {
+    outline: 3px solid #FFD700;
+    outline-offset: 2px;
+}
+
+button,
+.btn-post,
+.btn-danger,
+.btn-success,
+.btn-outline-danger {
+    font-size: 14px;
+    padding: 6px 14px;
+    border-radius: 12px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.btn-danger:hover {
+    background-color: #b02a00;
+}
+
+.btn-outline-danger:hover {
+    background-color: #cc3300;
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+}
+
+.btn-post {
+    background-color: #007acc;
+    color: white;
+    padding: 6px 14px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
+  
+  .btn-danger {
+    background-color: #cc3300;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 6px 14px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .btn-outline-danger {
+    background-color: transparent;
+    color: #cc3300;
+    border: 2px solid #cc3300;
+    border-radius: 12px;
+    padding: 6px 14px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .btn-success {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 6px 14px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+button + button {
+    margin-left: 10px;
+}
+
+.btn {
+    font-size: 14px;
+    padding: 6px 14px;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+  }
+  
+  .btn-danger {
+    background-color: #cc3300;
+    color: white;
+    border: none;
+  }
+  
+  .btn-outline-danger {
+    background-color: transparent;
+    color: #cc3300;
+    border: 2px solid #cc3300;
+  }
+  
+  .btn-success {
+    background-color: #28a745;
+    color: white;
+    border: none;
+  }
+
+  .btn {
+    font-size: 14px;
+    padding: 6px 14px;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+  }
+  
