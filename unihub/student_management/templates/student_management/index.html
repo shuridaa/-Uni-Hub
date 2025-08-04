@@ -1,0 +1,58 @@
+{% extends 'student_management/base.html' %}
+{% load static %}
+
+{% block title %}Welcome to Uni Hub{% endblock %}
+
+{% block extra_css %}
+<style>
+    .main-box {
+        max-width: 600px;
+        margin: 100px auto;
+        background-color: #ffffff;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .main-box h1 {
+        font-size: 2.5rem;
+        color: #003366;
+        margin-bottom: 1rem;
+    }
+
+    .main-box p {
+        font-size: 1.2rem;
+        color: #444;
+        margin-bottom: 2rem;
+    }
+
+    .btn {
+        background-color: #0055A5;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        margin: 0 10px;
+        border: none;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 1rem;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn:hover,
+    .btn:focus {
+        background-color: #003366;
+        outline: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="main-box">
+    <h1>Welcome to Uni Hub</h1>
+    <p>Discover events, join communities, and connect with others.</p>
+    <a href="{% url 'login' %}" class="btn">Login</a>
+    <a href="{% url 'register' %}" class="btn">Sign Up</a>
+</div>
+{% endblock %}

@@ -1,0 +1,220 @@
+{% load static %}  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+</head>
+<body>
+
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <header class="accessible-header">
+        <nav class="navbar">
+            <a href="{% url 'home' %}" class="logo-link">
+                <img src="{% static 'images/UWE_Bristol_logo1.png' %}" alt="Site Banner">
+            </a>
+            <ul class="nav-links">
+                <li><a href="{% url 'events' %}" class="{% if request.path == '/events/' %}active-link{% endif %}">Events</a></li>
+                <li><a href="{% url 'societies' %}">Societies</a></li>
+                <li><a href="{% url 'community' %}">Communities</a></li>
+                <li><a href="{% url 'friends' %}">Friends</a></li>
+                <li><a href="{% url 'search_posts' %}">Posts</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                {% endif %}
+            </ul>
+        </nav>        
+    </header>
+
+    <h2>Welcome, {{ user.first_name }}!</h2>
+
+    <div class="main-container">
+
+        <!-- Profile Section -->
+        <div class="profile">
+            {% if latest_update %}
+                <p>
+                    <strong>Profile Update Status:</strong>
+                    <span class="{% if latest_update.status == 'approved' %}text-success{% elif latest_update.status == 'rejected' %}text-danger{% else %}text-warning{% endif %}">
+                        {{ latest_update.status|capfirst }}
+                    </span>
+                </p>
+            {% endif %}
+
+            {% if user.profile_picture %}
+                <img src="{{ user.profile_picture.url }}" alt="Profile Image" style="object-fit: cover;">
+            {% else %}
+                <img src="{% static 'images/profile_placeholder.png' %}" alt="Default Profile Image">
+            {% endif %}
+
+            <p><strong>{{ user.first_name }} {{ user.last_name }}</strong><br>{{ user.course }}</p>
+            <a href="{% url 'profile' %}">Request Profile Update</a>
+
+            <div class="make-post mt-3">
+                <h4>Make a post:</h4>
+                <form method="POST">
+                    {% csrf_token %}
+                    <textarea name="post_content" placeholder="Start Typing..." required></textarea>
+                    <label for="visibility">Visibility:</label>
+                    <select name="visibility" id="visibility" class="form-select" required>
+                        <option value="public">Public</option>
+                        <option value="friends">Friends</option>
+                        <option value="community">Community</option>
+                        <option value="club">Club</option>
+                        <option value="society">Society</option>
+                    </select>
+                    <button class="btn-post" type="submit">Post</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Connections Section -->
+        <div class="friends-communities">
+            <div>
+                <strong>Your Friends:</strong>
+                {% if friends %}
+                    <ul>
+                        {% for friend in friends %}
+                            <li>{{ friend.first_name }} {{ friend.last_name }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>You have no friends yet.</p>
+                {% endif %}
+            </div>
+
+            <div>
+                <strong>Your Communities:</strong>
+                {% if joined_communities %}
+                    <ul>
+                        {% for community in joined_communities %}
+                            <li>{{ community.community_name }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>You haven't joined any communities yet.</p>
+                {% endif %}
+            </div>
+
+            <div>
+                <strong>Your Clubs:</strong>
+                {% if joined_societies %}
+                    <ul>
+                        {% for society in joined_societies %}
+                            <li>{{ society.society_name }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>You haven't joined any clubs yet.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Notifications Section -->
+        <div class="notifications">
+            <h4>🔔 Notifications</h4>
+            {% if notifications %}
+                <ul>
+                    {% for notification in notifications %}
+                        <li>
+                            {{ notification.message }}<br>
+                            <small>{{ notification.created_at|timesince }} ago</small>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No notifications yet.</p>
+            {% endif %}
+        </div>
+
+        <!-- Post Section -->
+        <div class="post-section">
+            <h3 class="post-title">Latest Posts</h3>
+            <div class="latest-posts">
+
+                {% for post in posts %}
+                    <div class="post-example">
+                        <div class="post-user">
+                            {{ post.user.first_name }} said:
+                        </div>
+
+                        <div class="post-content">
+                            {% if post.content|length > 200 %}
+                                {{ post.content|slice:":200" }}...
+                                <a href="{% url 'search_posts' %}?search={{ post.content|urlencode }}" style="font-size: 12px;">Show More</a>
+                            {% else %}
+                                {{ post.content }}
+                            {% endif %}
+                        </div>
+
+                        <div class="post-date">
+                            {{ post.timestamp|date:"M d, Y H:i" }}
+                        </div>
+
+                    <!-- Comment Form -->
+                     <button class="btn btn-sm btn-primary mt-2" onclick="toggleCommentBox('{{ post.post_id}}')">Comment</button>
+                     <div id="comment-box-{{ post.post_id }}" style="display:none; margin-top:10px;">
+                         <form method="POST" action="{% url 'add_comment' %}">
+                             {% csrf_token %}
+                             <input type="hidden" name="post_id" value="{{ post.post_id }}">
+                             <textarea name="comment_text" rows="2" placeholder="Write a comment..." required></textarea>
+                             <button class="btn-post" type="submit">Post Comment</button>
+                         </form>
+                     </div>
+ 
+                     <!-- Comments -->
+                     <div style="margin-top:10px; margin-left:20px;">
+                         {% for comment in post.comment_set.all %}
+                             <div style="background-color: #eef5ff; padding: 8px; border-radius: 6px; margin-bottom: 8px;">
+                                 <strong>{{ comment.user.first_name }} {{ comment.user.last_name }}</strong> said:
+                                 <div style="margin: 4px 0 6px 10px;">{{ comment.comment_text }}</div>
+                                 <small style="color: #666;">{{ comment.created_at|date:"M d, Y H:i" }}</small>
+ 
+                                 {% if comment.user == user %}
+                                     <form method="POST" action="{% url 'delete_comment' comment.id %}" style="display:inline;">
+                                         {% csrf_token %}
+                                         <button class="btn btn-sm btn-danger" onclick="return confirm('Delete this comment?')">Delete</button>
+                                     </form>
+                                 {% endif %}
+                             </div>
+                         {% empty %}
+                             <p style="margin-left:10px; font-style: italic; color: #555;">No comments yet.</p>
+                         {% endfor %}
+                     </div>
+ 
+                     <p><strong>Comment count:</strong> {{ post.comment_set.count }}</p>
+                 </div>
+                    {% empty %}
+                        <p>No posts available.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+    <script>
+        function toggleCommentBox(postId) {
+            // Hide all boxes first
+            const allBoxes = document.querySelectorAll('[id^="comment-box-"]');
+            allBoxes.forEach(box => box.style.display = "none");
+    
+            // Then toggle the selected one
+            const box = document.getElementById('comment-box-' + postId);
+            if (box) {
+                box.style.display = "block";
+            }
+        }
+    </script>
+
+</body>
+</html>

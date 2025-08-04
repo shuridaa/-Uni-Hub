@@ -1,0 +1,166 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Request Profile Update</title>
+  <link rel="stylesheet" href="{% static 'css/home.css' %}">
+  <style>
+    body {
+      background-color: #ffffff;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    .update-wrapper {
+      max-width: 700px;
+      margin: 50px auto;
+      padding: 30px;
+      background-color: #f9f9f9;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .update-wrapper h2 {
+      text-align: center;
+      font-size: 26px;
+      color: #003366;
+      margin-bottom: 25px;
+    }
+
+    form label {
+      font-weight: bold;
+      margin-top: 15px;
+      display: block;
+      color: #003366;
+    }
+
+    form select,
+    form input[type="text"],
+    form input[type="file"],
+    form input[type="date"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      margin-bottom: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
+    .profile-button {
+      width: 100%;
+      background-color: #0055A5;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 20px;
+    }
+
+    .profile-button:hover {
+      background-color: #003366;
+    }
+
+    .error-list {
+      background-color: #f8d7da;
+      color: #721c24;
+      border-radius: 10px;
+      padding: 12px 18px;
+      margin-bottom: 20px;
+      font-size: 15px;
+    }
+
+    .error-list ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="update-wrapper">
+    <h2>🛠️ Request Profile Update</h2>
+
+    {% if form.errors %}
+      <div class="error-list">
+        <ul>
+          {% for field in form %}
+            {% for error in field.errors %}
+              <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+            {% endfor %}
+          {% endfor %}
+          {% for error in form.non_field_errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <label for="field_to_update">Field to update:</label>
+      <select name="field_to_update" id="field_to_update" onchange="toggleFields()">
+        <option value="name">Full Name</option>
+        <option value="course">Course</option>
+        <option value="bio">Bio</option>
+        <option value="date_of_birth">Date of Birth</option>
+        <option value="gender">Gender</option>
+        <option value="facebook">Facebook</option>
+        <option value="twitter">Twitter</option>
+        <option value="instagram">Instagram</option>
+        <option value="profile_picture">Profile Picture</option>
+      </select>
+
+      <div id="text-field" class="">
+        <label for="new_value" id="text-label">New Value:</label>
+        <input type="text" name="new_value" id="new_value">
+      </div>
+
+      <div id="date-field" class="hidden">
+        <label for="date_value">New Date of Birth:</label>
+        <input type="date" name="date_value" id="date_value">
+      </div>
+
+      <div id="file-field" class="hidden">
+        <label for="profile_picture">Upload New Profile Picture:</label>
+        <input type="file" name="profile_picture" id="profile_picture">
+      </div>
+
+      <button type="submit" class="profile-button">Submit Request</button>
+    </form>
+  </div>
+
+  <script>
+    function toggleFields() {
+      const field = document.getElementById('field_to_update').value;
+      const textField = document.getElementById('text-field');
+      const fileField = document.getElementById('file-field');
+      const dateField = document.getElementById('date-field');
+      const textLabel = document.getElementById('text-label');
+
+      textField.classList.add("hidden");
+      fileField.classList.add("hidden");
+      dateField.classList.add("hidden");
+
+      if (field === "profile_picture") {
+        fileField.classList.remove("hidden");
+      } else if (field === "date_of_birth") {
+        dateField.classList.remove("hidden");
+      } else {
+        textField.classList.remove("hidden");
+        textLabel.innerText = "New " + field.replace('_', ' ').replace(/\b\w/g, c => c.toUpperCase()) + ":";
+      }
+    }
+
+    window.onload = toggleFields;
+  </script>
+</body>
+</html>
